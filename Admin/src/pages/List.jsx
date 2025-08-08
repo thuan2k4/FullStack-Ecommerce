@@ -8,7 +8,10 @@ const List = ({ token }) => {
     const fetchList = async () => {
         try {
             const res = await fetch(`${backendUrl}/api/product/list-product`, {
-                headers: { token: token },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
                 method: "GET"
             })
 
@@ -28,11 +31,11 @@ const List = ({ token }) => {
     const removeProduct = async (id) => {
         try {
             const res = await fetch(`${backendUrl}/api/product/remove-product`, {
-                method: "POST",
                 headers: {
-                    token: token,
+                    Authorization: `Bearer: ${token}`,
                     "Content-Type": "application/json"
                 },
+                method: "POST",
                 body: JSON.stringify({
                     productId: id
                 })
@@ -48,7 +51,6 @@ const List = ({ token }) => {
 
             }
         } catch (error) {
-            console.log(error)
             toast.error(error.message)
         }
     }
