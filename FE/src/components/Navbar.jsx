@@ -2,11 +2,23 @@ import React, { useContext, useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { assets } from '../assets/frontend_assets/assets'
 import { ShopContext } from '../context/ShopContext'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify';
+import DropDown from './DropDown'
 
 
 const Navbar = () => {
     const [visible, setVisible] = useState(false)
-    const { setShowSearch, getCartCount } = useContext(ShopContext)
+    const { setShowSearch, getCartCount, setToken, token, setCartItems, navigate } = useContext(ShopContext)
+    const [showDropDown, setShowDropDown] = useState(false)
+
+    const Logout = () => {
+        setToken("")
+        localStorage.setItem("token", "")
+        setCartItems({})
+        navigate('/login')
+        toast.success("Logout successfully!")
+    }
 
     return (
         <div className='flex justify-between items-center py-5 font-medium'>
@@ -15,7 +27,6 @@ const Navbar = () => {
                 <img src={assets.logo} className='w-36' alt="" />
             </Link>
 
-            {/* display: none = hidden */}
             <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
                 <NavLink to='/' className="flex flex-col items-center gap-1">
                     <p>HOME</p>
@@ -40,15 +51,18 @@ const Navbar = () => {
             <div className="flex items-center gap-6">
                 <img src={assets.search_icon} onClick={() => setShowSearch(true)} className='w-5 cursor-pointer' alt="Search-icon" />
                 <div className="group relative">
-                    {/* group cho phép phần tử con thay đổi style khi được hover hoặc focus */}
-                    <Link to={'/login'}><img className='w-5 cursor-pointer' src={assets.profile_icon} alt="Profile-icon" /></Link>
-                    <div className="group-hover:block hidden absolute dropsown-menu right-0 pt-4" >
-                        <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-                            <p className='cursor-pointer hover:text-black'>My Profile</p>
-                            <p className='cursor-pointer hover:text-black'>Orders</p>
-                            <p className='cursor-pointer hover:text-black'>Logout</p>
-                        </div>
-                    </div>
+                    {
+                        token
+                            ? <>
+                                <img onClick={() => setShowDropDown(!showDropDown)} className='w-5 cursor-pointer' src={assets.profile_icon} alt="Profile-icon" />
+                                <DropDown Logout={Logout} showDropDown={showDropDown} />
+                            </>
+                            : <>
+                                <Link to={'/login'}>
+                                    <img className='w-5 cursor-pointer' src={assets.profile_icon} alt="Profile-icon" />
+                                </Link>
+                            </>
+                    }
                 </div>
                 <Link to='/cart' className='relative'>
                     <img src={assets.cart_icon} className='w-5 min-w-5' alt="cart-icon" />

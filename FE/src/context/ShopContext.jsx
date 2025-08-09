@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { products } from "../assets/frontend_assets/assets";
+// import { products } from "../assets/frontend_assets/assets";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -9,15 +9,39 @@ const ShopContextProvider = (props) => {
 
     const currency = '$'
     const delivery_fee = 10
+    const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [search, setSearch] = useState('')
     const [showSearch, setShowSearch] = useState(false)
     const [cartItems, setCartItems] = useState({})
+    const [products, setProducts] = useState([])
+    const [token, setToken] = useState("")
+
     const navigate = useNavigate()
+
+    const getProducts = async () => {
+        try {
+            const res = await fetch(`${backendUrl}/api/product/list-product`, {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "GET"
+            })
+            const data = await res.json()
+            if (data.success) {
+                setProducts(data.products)
+            }
+            else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
 
     // Get ID & Size then put into cart
     const addToCart = async (itemId, size) => {
         let cartData = structuredClone(cartItems) // copy infor cart
-        console.log(cartData)
+        // console.log(cartData)
         if (!size) {
             toast.error('Select Product Size!')
             return
@@ -38,8 +62,9 @@ const ShopContextProvider = (props) => {
     }
 
     useEffect(() => {
-        console.log(cartItems)
+        getProducts()
     }, [cartItems])
+
 
     const getCartCount = () => {
         let totalCount = 0
@@ -88,9 +113,10 @@ const ShopContextProvider = (props) => {
         showSearch, setShowSearch,
         cartItems, addToCart,
         getCartCount, updateQuantity,
-        getCartAmount,
+        getCartAmount, setCartItems,
         navigate,
-
+        backendUrl,
+        token, setToken
     }
 
     return (
