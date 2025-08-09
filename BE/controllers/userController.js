@@ -30,11 +30,12 @@ const loginUser = async (req, res) => {
         const token = createToken(user._id)
         res.json({
             success: true,
-            token: token
+            token: token,
+            message: "Login successfully!"
         })
 
     } catch (error) {
-
+        toast.error(error.message)
     }
 }
 
@@ -52,14 +53,14 @@ const registerUser = async (req, res) => {
 
         if (!validator.isEmail(email)) {
             return res.json({
-                succes: false,
+                success: false,
                 message: "Please enter a valid email!"
             })
         }
 
         if (password.length < 6) {
             return res.json({
-                succes: false,
+                success: false,
                 message: "Please enter a strong password!"
             })
         }
@@ -74,11 +75,10 @@ const registerUser = async (req, res) => {
         })
 
         const user = await newUser.save()
-        const token = createToken(user._id)
 
         res.json({
-            succes: true,
-            token: token
+            success: true,
+            message: "Register successfully!"
         })
 
     } catch (error) {

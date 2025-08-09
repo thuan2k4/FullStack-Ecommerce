@@ -49,7 +49,9 @@ const Add = ({ token }) => {
                 setName('')
                 setDescription('')
                 setPrice('')
+                setBestseller(false)
                 setImages([])
+                setSizes([])
             }
             else {
                 toast.error(data.message)
