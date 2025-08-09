@@ -30,9 +30,11 @@ const List = ({ token }) => {
 
     const removeProduct = async (id) => {
         try {
+            // console.log(id, token);
+
             const res = await fetch(`${backendUrl}/api/product/remove-product`, {
                 headers: {
-                    Authorization: `Bearer: ${token}`,
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
                 method: "POST",

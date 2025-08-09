@@ -3,12 +3,10 @@ import { assets } from '../assets/admin_assets/assets'
 import { backendUrl } from './../App';
 
 import { toast } from 'react-toastify';
+import ImageUploader from '../components/ImageUploader';
 const Add = ({ token }) => {
 
-    const [image1, setImage1] = useState(false)
-    const [image2, setImage2] = useState(false)
-    const [image3, setImage3] = useState(false)
-    const [image4, setImage4] = useState(false)
+    const [images, setImages] = useState([])
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
@@ -32,16 +30,15 @@ const Add = ({ token }) => {
             formData.append("bestseller", bestseller)
             formData.append("sizes", JSON.stringify(sizes))
 
-            image1 && formData.append("image1", image1)
-            image2 && formData.append("image2", image2)
-            image3 && formData.append("image3", image3)
-            image4 && formData.append("image4", image4)
+            images.map((image) => {
+                formData.append(`images`, image)
+            })
 
 
             const res = await fetch(`${backendUrl}/api/product/add-product`, {
                 method: "POST",
                 headers: {
-                    token: token,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: formData
             })
@@ -52,10 +49,7 @@ const Add = ({ token }) => {
                 setName('')
                 setDescription('')
                 setPrice('')
-                setImage1(false)
-                setImage2(false)
-                setImage3(false)
-                setImage4(false)
+                setImages([])
             }
             else {
                 toast.error(data.message)
@@ -70,25 +64,11 @@ const Add = ({ token }) => {
     return (
         <form onSubmit={onSubmitHandler} className='flex flex-col w-full items-start gap-3'>
             <div>
-                <p className='text-xl font-medium'>Upload Image</p>
-                <div className='flex flex-row mt-2 gap-5'>
-                    <label htmlFor="image1">
-                        <img src={!image1 ? assets.upload_area : URL.createObjectURL(image1)} alt="" />
-                        <input onChange={(e) => setImage1(e.target.files[0])} type="file" id='image1' hidden />
-                    </label>
-                    <label htmlFor="image2">
-                        <img src={!image2 ? assets.upload_area : URL.createObjectURL(image2)} alt="" />
-                        <input onChange={(e) => setImage2(e.target.files[0])} type="file" id='image2' hidden />
-                    </label>
-                    <label htmlFor="image3">
-                        <img src={!image3 ? assets.upload_area : URL.createObjectURL(image3)} alt="" />
-                        <input onChange={(e) => setImage3(e.target.files[0])} type="file" id='image3' hidden />
-                    </label>
-                    <label htmlFor="image4">
-                        <img src={!image4 ? assets.upload_area : URL.createObjectURL(image4)} alt="" />
-                        <input onChange={(e) => setImage4(e.target.files[0])} type="file" id='image4' hidden />
-                    </label>
+                <div className='flex flex-row gap-3 items-center mb-5'>
+                    <p className='font-medium'>Upload Image</p>
+                    <p className='hover:bg-black hover:text-white transition w-15 rounded border flex justify-center cursor-pointer font-medium' onClick={() => setImages([])}>Reset</p>
                 </div>
+                <ImageUploader images={images} setImages={setImages} />
             </div>
             <div className='w-full '>
                 <p className='mb-2'>Product Name:</p>
