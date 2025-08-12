@@ -14,7 +14,7 @@ const ShopContextProvider = (props) => {
     const [showSearch, setShowSearch] = useState(false)
     const [cartItems, setCartItems] = useState({})
     const [products, setProducts] = useState([])
-    const [token, setToken] = useState("")
+    const [token, setToken] = useState(localStorage.getItem('token') || "")
 
     const navigate = useNavigate()
 
@@ -40,8 +40,8 @@ const ShopContextProvider = (props) => {
 
     // Get ID & Size then put into cart
     const addToCart = async (itemId, size) => {
-        let cartData = structuredClone(cartItems) // copy infor cart
-        // console.log(cartData)
+        let cartData = structuredClone(cartItems)
+
         if (!size) {
             toast.error('Select Product Size!')
             return
@@ -59,11 +59,36 @@ const ShopContextProvider = (props) => {
             cartData[itemId][size] = 1
         }
         setCartItems(cartData)
+
+        if (token) {
+            try {
+                const res = await fetch(`${backendUrl}/api/cart/add-cart`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        itemId,
+                        size
+                    })
+                })
+                const data = await res.json()
+                // console.log(data)
+            } catch (error) {
+                console.log(error)
+                toast.error(error.message)
+            }
+        }
     }
 
     useEffect(() => {
+        if (token) {
+            localStorage.setItem('token', token)
+            getUserCart()
+        }
         getProducts()
-    }, [cartItems])
+    }, [token])
 
 
     const getCartCount = () => {
@@ -84,12 +109,34 @@ const ShopContextProvider = (props) => {
         let cartData = structuredClone(cartItems)
         cartData[itemId][size] = quantity
         setCartItems(cartData)
+
+        if (token) {
+            try {
+                const res = await fetch(`${backendUrl}/api/cart/update-cart`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        itemId,
+                        size,
+                        quantity
+                    })
+                })
+                const data = await res.json()
+                // console.log(data)
+            } catch (error) {
+                console.log(error)
+                toast.error(error.message)
+            }
+        }
     }
 
     // Count total product
     const getCartAmount = () => {
         let totalAmount = 0
-        console.log(cartItems)
+        // console.log(cartItems)
         for (const items in cartItems) {
             let itemInfo = products.find((product) => product._id === items)
             for (const item in cartItems[items]) {
@@ -105,6 +152,26 @@ const ShopContextProvider = (props) => {
         return totalAmount
     }
 
+    const getUserCart = async () => {
+        try {
+            const res = await fetch(`${backendUrl}/api/cart/get-cart`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            const data = await res.json()
+            if (data.success) {
+                setCartItems(data.cartData)
+            }
+            // console.log(data)
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
+
     const value = {
         products,
         currency,
@@ -116,7 +183,8 @@ const ShopContextProvider = (props) => {
         getCartAmount, setCartItems,
         navigate,
         backendUrl,
-        token, setToken
+        token, setToken,
+        getUserCart
     }
 
     return (

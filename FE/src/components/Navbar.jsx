@@ -9,7 +9,7 @@ import DropDown from './DropDown'
 
 const Navbar = () => {
     const [visible, setVisible] = useState(false)
-    const { setShowSearch, getCartCount, setToken, token, setCartItems, navigate } = useContext(ShopContext)
+    const { setShowSearch, getCartCount, setToken, token, setCartItems, navigate, getUserCart } = useContext(ShopContext)
     const [showDropDown, setShowDropDown] = useState(false)
 
     const Logout = () => {
@@ -17,8 +17,13 @@ const Navbar = () => {
         localStorage.setItem("token", "")
         setCartItems({})
         navigate('/login')
+        setShowDropDown(false)
         toast.success("Logout successfully!")
     }
+
+    useEffect(() => {
+        getUserCart()
+    }, [])
 
     return (
         <div className='flex justify-between items-center py-5 font-medium'>
@@ -58,9 +63,12 @@ const Navbar = () => {
                                 <DropDown Logout={Logout} showDropDown={showDropDown} />
                             </>
                             : <>
-                                <Link to={'/login'}>
-                                    <img className='w-5 cursor-pointer' src={assets.profile_icon} alt="Profile-icon" />
-                                </Link>
+                                <img
+                                    onClick={() => navigate('/login')}
+                                    className='w-5 cursor-pointer'
+                                    src={assets.profile_icon}
+                                    alt="Profile-icon"
+                                />
                             </>
                     }
                 </div>

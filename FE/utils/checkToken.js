@@ -8,6 +8,7 @@ export function checkToken() {
         const isExpired = payload.exp * 1000 < Date.now();
         return !isExpired;
     } catch (error) {
+        console.log(error)
         return false;
     }
 }

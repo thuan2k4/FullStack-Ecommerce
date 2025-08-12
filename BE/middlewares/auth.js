@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const adminAuth = async (req, res, next) => {
+const authUser = async (req, res, next) => {
     try {
         const header = req.headers.authorization
         if (!header || !header.startsWith('Bearer ')) {
@@ -11,6 +11,8 @@ const adminAuth = async (req, res, next) => {
         }
         const token = header.split(" ")[1]
         const token_decode = jwt.verify(token, process.env.JWT_SECRET)
+        // console.log(token_decode)
+        req.body.userId = token_decode.id
 
         let exp = token_decode.exp
         let now = Math.floor(Date.now() / 1000)
@@ -21,20 +23,10 @@ const adminAuth = async (req, res, next) => {
                 message: "The token has expired."
             })
         }
-
-        if (token_decode.email !== process.env.ADMIN_EMAIL) {
-            return res.status(403).json({
-                success: false,
-                message: "Not Authorized!"
-            })
-        }
         next()
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        })
+        console.log(error)
     }
 }
 
-export default adminAuth
+export default authUser

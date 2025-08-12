@@ -3,12 +3,11 @@ import { useParams } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext'
 import { assets } from '../assets/frontend_assets/assets'
 import RelatedProducts from '../components/RelatedProducts'
-import { checkToken } from './../../utils/checkToken';
 import { toast } from 'react-toastify'
 const Product = () => {
 
   const { productId } = useParams()
-  const { products, currency, addToCart, navigate } = useContext(ShopContext)
+  const { products, currency, addToCart, navigate, token } = useContext(ShopContext)
   const [productData, setProductData] = useState(false)
   const [image, setImage] = useState('')
   const [size, setSize] = useState('')
@@ -24,8 +23,7 @@ const Product = () => {
   }
 
   const checkLoginBeforeAddToCart = () => {
-    const flag = checkToken()
-    if (flag == true) {
+    if (token) {
       addToCart(productData._id, size)
     }
     else {

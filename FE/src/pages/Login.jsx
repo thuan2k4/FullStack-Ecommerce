@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 const Login = () => {
 
   const [currenState, setCurrentState] = useState('Login')
-  const { token, setToken, navigate, backendUrl } = useContext(ShopContext)
+  const { token, setToken, navigate, backendUrl, getUserCart } = useContext(ShopContext)
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -46,7 +46,7 @@ const Login = () => {
           })
         })
         const data = await res.json()
-        console.log(data);
+        // console.log(data);
         if (data.success) {
           setToken(data.token)
           localStorage.setItem('token', token)
@@ -65,9 +65,6 @@ const Login = () => {
 
     if (token) {
       localStorage.setItem('token', token)
-    }
-
-    if (localStorage.getItem("token") !== "") {
       navigate('/')
     }
 

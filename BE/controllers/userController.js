@@ -27,7 +27,16 @@ const loginUser = async (req, res) => {
             })
         }
 
-        const token = createToken(user._id)
+        const token = jwt.sign({
+            id: user._id,
+            name: user.name,
+            email: user.email
+        },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: Number(process.env.TOKEN_EXPIRE),
+            }
+        )
         res.json({
             success: true,
             token: token,
@@ -35,7 +44,7 @@ const loginUser = async (req, res) => {
         })
 
     } catch (error) {
-        toast.error(error.message)
+        console.log(error)
     }
 }
 
