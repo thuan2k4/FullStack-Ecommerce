@@ -132,10 +132,6 @@ const verifyStripe = async (req, res) => {
 }
 
 
-const PlaceOrderRazorpay = async (req, res) => {
-
-}
-
 // crawl all order for admin
 const allOrders = async (req, res) => {
     try {
@@ -192,4 +188,4 @@ const updateStatus = async (req, res) => {
     }
 }
 
-export { PlaceOrder, PlaceOrderRazorpay, PlaceOrderStripe, updateStatus, userOrders, allOrders, verifyStripe }
+export { PlaceOrder, PlaceOrderStripe, updateStatus, userOrders, allOrders, verifyStripe }
