@@ -60,7 +60,7 @@ const Navbar = () => {
                         token
                             ? <>
                                 <img onClick={() => setShowDropDown(!showDropDown)} className='w-5 cursor-pointer' src={assets.profile_icon} alt="Profile-icon" />
-                                <DropDown Logout={Logout} showDropDown={showDropDown} />
+                                <DropDown Logout={Logout} showDropDown={showDropDown} setShowDropDown={setShowDropDown}/>
                             </>
                             : <>
                                 <img
