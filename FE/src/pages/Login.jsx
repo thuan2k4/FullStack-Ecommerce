@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 const Login = () => {
 
   const [currenState, setCurrentState] = useState('Login')
-  const { token, setToken, navigate, backendUrl, getUserCart } = useContext(ShopContext)
+  const { token, setToken, navigate, backendUrl } = useContext(ShopContext)
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -87,7 +87,7 @@ const Login = () => {
             : <p onClick={() => setCurrentState('Login')} className='cursor-pointer'>Login here!</p>
         }
       </div>
-      <button className='bg-black text-white font-light px-8 py-2 mt-4'>{currenState === 'Login' ? 'Sign In' : 'Sign Up'}</button>
+      <button className='bg-black cursor-pointer text-white font-light px-8 py-2 mt-4'>{currenState === 'Login' ? 'Sign In' : 'Sign Up'}</button>
     </form>
   )
 }

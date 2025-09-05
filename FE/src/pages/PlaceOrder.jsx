@@ -16,7 +16,7 @@ const PlaceOrder = () => {
         city: '',
         state: '',
         zipcode: '',
-        coutry: '',
+        country: '',
         phone: ''
     })
 
@@ -65,7 +65,6 @@ const PlaceOrder = () => {
                             body: JSON.stringify(orderData)
                         })
                         const data = await res.json()
-                        console.log(data);
                         if (data.success) {
                             setCartItems({})
                             navigate('/orders')
@@ -77,6 +76,30 @@ const PlaceOrder = () => {
                         console.log(error)
                         toast.error(error.message)
                     }
+                    break
+                case 'stripe':
+                    try {
+                        const resStripe = await fetch(`${backendUrl}/api/order/stripe`, {
+                            method: "POST",
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(orderData)
+                        })  
+                        const data = await resStripe.json()
+                        if (data.success) {
+                            const {session_url} = data
+                            window.location.replace(session_url)
+                        }
+                        else{
+                            toast.error(data.message)
+                        }
+                    } catch (error) {
+                        console.log(error)
+                        toast.error(error.message)
+                    }
+                    
                     break
                 default:
                     break
@@ -134,7 +157,7 @@ const PlaceOrder = () => {
                         </div>
                     </div>
                     <div className='w-full text-end mt-8'>
-                        <button onClick={() => navigate('/orders')} className='bg-black text-white px-16 py-3 text-sm'>PLACE ORDER </button>
+                        <button type="submit" className='bg-black text-white px-16 py-3 text-sm'>PLACE ORDER </button>
                     </div>
                 </div>
             </div>
