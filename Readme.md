@@ -1,39 +1,114 @@
-<h1 align="center">🛍️ E-Commerce App</h1>
-<p align="center">Website bán hàng trực tuyến với React, Express và MongoDB</p>
+# FullStack E-commerce (MERN + MVC) 
+
+**A full-featured e-commerce platform** built with the MERN stack (MongoDB, Express, React, Node.js), following the **MVC (Model–View–Controller)** architecture. Includes an Admin panel, user authentication, shopping cart, checkout, and responsive UI. 
 
 
----
+--- 
+## Table of Contents 
+- [About](#about) 
+- [Features](#features) 
+- [Architecture](#architecture) 
+- [Tech Stack](#tech-stack) 
+- [Installation](#installation) 
+- [Usage](#usage) 
+- [Project Structure](#project-structure) 
 
-## Tính năng:
 
-### 🧑 Người dùng
-- ✅ Đăng ký, đăng nhập
-- ✅ Xem danh sách sản phẩm
-- ✅ Xem chi tiết sản phẩm
-- ✅ Thêm vào giỏ hàng
-- ✅ Thanh toán đơn hàng (giả lập)
-- ✅ Quản lý đơn hàng cá nhân
+--- 
 
-### 🔐 Admin
-- ✅ CRUD sản phẩm
-- ✅ Xem và xử lý đơn hàng
+## About 
+A modern e-commerce application where users can browse products, add to cart, and checkout. Admins can manage products, orders, and users. Built with a clean structure using MVC architecture to ensure maintainability and scalability. 
 
----
+--- 
+## Features 
+- [x] **MVC architecture** (Model–View–Controller) — clear separation of concerns 
+- [x] **User Authentication** (JWT-based registration & login) 
+- [x] **CRUD operations** — manage products, categories, users 
+- [x] **Shopping Cart** — add/remove items & quantity management
+- [x] **Checkout & Order Processing** 
+- [x] **Admin Dashboard** — manage products, orders, users 
+- [x] **Responsive UI** — works well on mobile & desktop 
+- [x] **RESTful API** for frontend–backend communication 
+--- 
+## Architecture 
+This project is structured with the **MVC** design pattern: 
+- **Model**: database schemas and data logic (e.g. Mongoose models) 
+- **View**: React components rendering UI and handling user interaction 
+- **Controller**: backend controllers managing logic and routing via Express 
+--- 
+## Tech Stack 
+- **Frontend**: React, CSS Framework (Tailwind) 
+- **Backend**: Node.js, Express.js 
+- **Database**: MongoDB (via Mongoose) 
+- **Authentication**: JWT (JSON Web Tokens) 
+- **Styling & UI**: Tailwind 
+- **Tools**: Postman (test API). 
+--- 
+## Installation
+```bash
+# Clone the repository
+git clone https://github.com/thuan2k4/FullStack-Ecommerce.git
+cd FullStack-Ecommerce
 
-## 🔧 Công nghệ sử dụng:
+# Backend setup
+cd backend
+npm install
+npm run server  # or node index.js
 
-### Frontend
-- ReactJS (Vite)
-- FetchAPI
-- React Router DOM
-- TailwinCSS
+# Frontend setup
+cd ../frontend
+npm install
+npm run dev
+```
 
-### Backend
-- NodeJS + Express
-- MongoDB
-- dotenv
-- cors
+## Usage
+- User: register/login → browse → add to cart → checkout
+- Admin: login via admin credentials → manage products, users, orders
 
-### Auth
-- JWT
-- bcryptjs
+Optional: Create .env file with:
+-  For Back-End:
+
+```bash
+MONGODB_URI = YOUR_MONGODB_URI
+CLOUDINARY_API_KEY = YOUR_CLOUDINARY_API_KEY
+CLOUDINARY_SECRET_KEY = YOUR_CLOUDINARY_SECRET_KEY
+CLOUDINARY_NAME = YOUR_CLOUDINARY_NAME
+JWT_SECRET = YOUR_JWT_SECRET
+ADMIN_EMAIL = YOUR_ADMIN_EMAIL
+ADMIN_PASSWORD = YOUR_ADMIN_PASSWORD
+STRIPE_SECRET_KEY = YOUR_STRIPE_SECRET_KEY
+TOKEN_EXPIRE=36000
+```
+
+- For Front-End, Admin:
+```bash
+VITE_BACKEND_URL = "http://localhost:4000"
+```
+
+## Project Structure
+FullStack-Ecommerce/
+├── BE/
+|   ├── config/
+│   ├── controllers/
+│   ├── middlewares/
+│   ├── models/
+│   ├── routes/
+│   ├── .env
+│   └── server.js (or index.js)
+├── Admin/
+|   ├── public/
+|   ├── src/
+|   │   ├── assets/
+|   │   ├── components/
+|   │   └── pages/
+|   └── .env
+└── FE/
+    ├── src/
+    │   ├── assets/
+    │   ├── components/
+    │   ├── context/
+    │   ├── pages/
+    │   └── services/ (API calls)
+    ├── .env
+    ├── utils/
+    └── public/
