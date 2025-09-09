@@ -53,7 +53,7 @@ cd FullStack-Ecommerce
 # Backend setup
 cd backend
 npm install
-npm run server  # or node index.js
+npm run server  # or node server.js
 
 # Frontend setup
 cd ../frontend
@@ -86,6 +86,7 @@ VITE_BACKEND_URL = "http://localhost:4000"
 ```
 
 ## Project Structure
+```
 FullStack-Ecommerce/
 ├── BE/
 |   ├── config/
@@ -107,8 +108,8 @@ FullStack-Ecommerce/
     │   ├── assets/
     │   ├── components/
     │   ├── context/
-    │   ├── pages/
-    │   └── services/ (API calls)
+    │   └──  pages/
     ├── .env
     ├── utils/
     └── public/
+```
