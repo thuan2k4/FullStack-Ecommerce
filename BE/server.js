@@ -24,4 +24,5 @@ app.use('/api/product', productRouter)
 app.use('/api/cart', cartRouter)
 app.use('/api/order', orderRouter)
 
-app.listen(port, () => console.log('Server started on PORT: ' + port))
+export default app
+// app.listen(port, () => console.log('Server started on PORT: ' + port))

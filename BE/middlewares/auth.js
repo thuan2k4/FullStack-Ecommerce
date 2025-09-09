@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import 'dotenv/config'
 
 const authUser = async (req, res, next) => {
     try {
@@ -10,9 +11,23 @@ const authUser = async (req, res, next) => {
             })
         }
         const token = header.split(" ")[1]
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'Token is required'
+            })
+        }
+
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({
+                success: false,
+                message: 'Server configuration error: JWT_SECRET is missing'
+            });
+        }
+
         const token_decode = jwt.verify(token, process.env.JWT_SECRET)
-        // console.log(token_decode)
-        req.body.userId = token_decode.id
+
+        req.userId = token_decode.id
 
         let exp = token_decode.exp
         let now = Math.floor(Date.now() / 1000)
@@ -26,6 +41,12 @@ const authUser = async (req, res, next) => {
         next()
     } catch (error) {
         console.log(error)
+        return res.status(401).json({
+            success: false,
+            message: error.name === 'JsonWebTokenError'
+                ? 'Invalid token'
+                : 'Authentication error'
+        })
     }
 }
 
