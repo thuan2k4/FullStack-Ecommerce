@@ -11,6 +11,8 @@
 - [Tech Stack](#tech-stack) 
 - [Installation](#installation) 
 - [Usage](#usage) 
+- [Deployment](#deployment-vercel)
+- [Docker Setup](#docker-setup)
 - [Project Structure](#project-structure) 
 
 
@@ -61,11 +63,12 @@ npm install
 npm run dev
 ```
 
+---
 ## Usage
 - User: register/login → browse → add to cart → checkout
 - Admin: login via admin credentials → manage products, users, orders
 
-Optional: Create .env file with:
+Optional: Create `.env` file with:
 -  For Back-End:
 
 ```bash
@@ -84,7 +87,73 @@ TOKEN_EXPIRE=36000
 ```bash
 VITE_BACKEND_URL = "http://localhost:4000"
 ```
+---
+## Deployment Vercel
+- Config `vercel.json` for Admin/FE/BE
+- Product URL:
+    + Back End: https://ecommerce-be-psi-five.vercel.app
+    + Front End: https://ecommerce-fe-zeta-one.vercel.app
+    + Admin Panel: https://ecommer-admin-panel.vercel.app
+---
+## Docker Setup
+- Run docker compose `docker-compose up --build`
+- File `docker-compose.yml`:
+```
+version: '3.9'
 
+services:
+  backend:
+    build: ./BE
+    container_name: backend-server
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./BE/.env
+    depends_on:
+      - mongo
+    volumes:
+      - ./BE:/usr/src/app
+      - /usr/src/app/node_modules
+
+  frontend:
+    build: ./FE
+    container_name: frontend-app
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./FE/.env
+    volumes:
+      - ./FE:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - backend
+
+  admin:
+    build: ./Admin
+    container_name: admin-app
+    ports:
+      - "5174:5173"
+    env_file:
+      - ./Admin/.env
+    volumes:
+      - ./Admin:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+
+```
+---
 ## Project Structure
 ```
 FullStack-Ecommerce/
