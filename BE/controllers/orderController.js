@@ -5,13 +5,19 @@ import Stripe from 'stripe'
 const currency = 'inr'
 const deliveryCharge = 10
 
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 const PlaceOrder = async (req, res) => {
     try {
         const userId = req.userId
         const { items, amount, address } = req.body
+
+        if (!items?.length || !amount || !address) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required fields!"
+            })
+        }
 
         const orderData = {
             userId,
@@ -27,18 +33,15 @@ const PlaceOrder = async (req, res) => {
         const newOrder = new orderModel(orderData)
         await newOrder.save()
 
-        await userModel.findByIdAndUpdate(
-            userId,
-            { cartData: {} }
-        )
+        await userModel.findByIdAndUpdate(userId, { cartData: {} })
 
-        res.json({
+        res.status(201).json({
             success: true,
-            message: "Order Placed"
+            message: "Order placed successfully!"
         })
     } catch (error) {
-        console.log(error)
-        res.json({
+        console.error(error)
+        res.status(500).json({
             success: false,
             message: error.message
         })
@@ -48,8 +51,15 @@ const PlaceOrder = async (req, res) => {
 const PlaceOrderStripe = async (req, res) => {
     try {
         const userId = req.userId
-        const {  items, amount, address } = req.body
+        const { items, amount, address } = req.body
         const { origin } = req.headers
+
+        if (!items?.length || !amount || !address) {
+            return res.status(400).json({
+                success: false,
+                message: "Missing required fields!"
+            })
+        }
 
         const orderData = {
             userId,
@@ -67,10 +77,8 @@ const PlaceOrderStripe = async (req, res) => {
 
         const line_items = items.map((item) => ({
             price_data: {
-                currency: currency,
-                product_data: {
-                    name: item.name,
-                },
+                currency,
+                product_data: { name: item.name },
                 unit_amount: item.price * 100
             },
             quantity: item.quantity
@@ -78,10 +86,8 @@ const PlaceOrderStripe = async (req, res) => {
 
         line_items.push({
             price_data: {
-                currency: currency,
-                product_data: {
-                    name: 'Delivery Charges',
-                },
+                currency,
+                product_data: { name: 'Delivery Charges' },
                 unit_amount: deliveryCharge * 100
             },
             quantity: 1
@@ -94,96 +100,92 @@ const PlaceOrderStripe = async (req, res) => {
             mode: 'payment',
         })
 
-        res.json({
+        res.status(200).json({
             success: true,
             session_url: session.url
         })
     } catch (error) {
-        console.log(error)
-        res.json({
+        console.error(error)
+        res.status(500).json({
             success: false,
             message: error.message
         })
     }
 }
 
-// Verify Stripe
 const verifyStripe = async (req, res) => {
     const { orderId, success, userId } = req.body
 
     try {
-        if (success == "true") {
+        if (success === "true") {
             await orderModel.findByIdAndUpdate(orderId, { payment: true })
             await userModel.findByIdAndUpdate(userId, { cartData: {} })
-            res.json({
-                success: true,
-            })
-        }
-        else {
+            return res.status(200).json({ success: true })
+        } else {
             await orderModel.findByIdAndDelete(orderId)
-            res.json({
-                success: false
-            })
+            return res.status(400).json({ success: false, message: "Payment failed, order removed!" })
         }
     } catch (error) {
-        res.json({
+        res.status(500).json({
             success: false,
             message: error.message
         })
     }
 }
 
-
-// crawl all order for admin
 const allOrders = async (req, res) => {
     try {
         const orders = await orderModel.find({})
-
-        res.json({
+        res.status(200).json({
             success: true,
-            orders: orders
+            orders
         })
     } catch (error) {
-        console.log(error)
-        res.json({
+        console.error(error)
+        res.status(500).json({
             success: false,
             message: error.message
         })
     }
 }
 
-// for client
 const userOrders = async (req, res) => {
     try {
-        const userId  = req.userId
-        const orderDetail = await orderModel.find({ userId: userId })
+        const userId = req.userId
+        const orderDetail = await orderModel.find({ userId })
 
-        res.json({
+        res.status(200).json({
             success: true,
-            orderDetail: orderDetail
+            orderDetail
         })
     } catch (error) {
-        console.log(error)
-        res.json({
+        console.error(error)
+        res.status(500).json({
             success: false,
             message: error.message
         })
     }
 }
 
-// update order detail for admin panel
 const updateStatus = async (req, res) => {
     try {
         const { orderId, status } = req.body
 
+        if (!orderId || !status) {
+            return res.status(400).json({
+                success: false,
+                message: "Order ID and status are required!"
+            })
+        }
+
         await orderModel.findByIdAndUpdate(orderId, { status })
-        res.json({
+        res.status(200).json({
             success: true,
-            message: "Status Updated!"
+            message: "Status updated successfully!"
         })
     } catch (error) {
-        console.log(error)
-        res.json({
+        console.error(error)
+        res.status(500).json({
             success: false,
             message: error.message
         })
