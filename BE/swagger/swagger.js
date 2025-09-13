@@ -18,6 +18,10 @@ const swaggerOptions = {
                 url: `http://localhost:${port}`,
                 description: 'Development server',
             },
+            {
+                url: `https://ecommerce-be-psi-five.vercel.app`,
+                description: 'Deploy(Vercel) server',
+            }
         ],
         tags: [
             { name: "Users", description: "User management" },

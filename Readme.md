@@ -91,7 +91,7 @@ VITE_BACKEND_URL = "http://localhost:4000"
 ## Deployment Vercel
 - Config `vercel.json` for Admin/FE/BE
 - Product URL:
-    + Back End: https://ecommerce-be-psi-five.vercel.app
+    + API Docs: https://ecommerce-be-psi-five.vercel.app/api/docs
     + Front End: https://ecommerce-fe-zeta-one.vercel.app
     + Admin Panel: https://ecommer-admin-panel.vercel.app
 ---
