@@ -1,0 +1,265 @@
+# swagger/paths/orders.yaml
+paths:
+  /api/order/list:
+    get:
+      summary: Get all order from user
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Get list order
+          content:
+            application/json:
+              example:
+                success: true
+                message: "Get list Order successfully!"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"
+
+  /api/order/status:
+    put:
+      summary: Update order status
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderId
+                - status
+              properties:
+                orderId:
+                  type: string
+                  example: "68c0f0edb9e01102d477e866"
+                status:
+                  type: string
+                  example: "Pending"
+      responses:
+        200:
+          description: Update order successfully
+          content:
+            application/json:
+              example:
+                success: true
+                message: "OK"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Bad Request"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"
+
+  /api/order/place:
+    post:
+      summary: Accept order
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - items
+                - amount
+                - address
+              properties:
+                userId:
+                  type: string
+                  description: User ID
+                  example: 689beebc38e282f708deaa07
+                items:
+                  type: array
+                  description: Order Detail
+                  items:
+                    type: object
+                    required:
+                      - _id
+                      - name
+                      - description
+                      - price
+                      - image
+                      - category
+                      - subCategory
+                      - sizes
+                      - bestseller
+                      - date
+                      - size
+                      - quantity
+                    properties:
+                      _id:
+                        type: string
+                        example: 6896e72f016eb66b99b67ec5
+                      name:
+                        type: string
+                        example: Women Round Neck Cotton Top
+                      description:
+                        type: string
+                        example: A lightweight, usually knitted, pullover shirt...
+                      price:
+                        type: number
+                        example: 100
+                      image:
+                        type: array
+                        items:
+                          type: string
+                        example:
+                          - https://res.cloudinary.com/dz89ma5di/image/upload/v1754721902/akdsrrh9
+                      category:
+                        type: string
+                        example: Men
+                      subCategory:
+                        type: string
+                        example: Topwear
+                      sizes:
+                        type: array
+                        items:
+                          type: string
+                        example: [S, M, XXL]
+                      bestseller:
+                        type: boolean
+                        example: true
+                      date:
+                        type: string
+                        format: date-time
+                        example: 2025-08-09T06:14:07.545Z
+                      size:
+                        type: string
+                        description: Size
+                        example: L
+                      quantity:
+                        type: integer
+                        description: quantity
+                        example: 4
+                amount:
+                  type: number
+                  description: Tổng tiền của đơn hàng (đã gồm phí giao hàng)
+                  example: 110
+                address:
+                  type: object
+                  description: Thông tin giao hàng
+                  required:
+                    - firstName
+                    - lastName
+                    - email
+                    - street
+                    - city
+                    - state
+                    - zipcode
+                    - country
+                    - phone
+                  properties:
+                    firstName:
+                      type: string
+                      example: Đào Quang
+                    lastName:
+                      type: string
+                      example: Thuận
+                    email:
+                      type: string
+                      format: email
+                      example: qthuan1234@gmail.com
+                    street:
+                      type: string
+                      example: "Thành phố Huế"
+                    city:
+                      type: string
+                      example: "Bangkok"
+                    state:
+                      type: string
+                      example: "Thừa Thiên Huế"
+                    zipcode:
+                      type: string
+                      example: "530000"
+                    country:
+                      type: string
+                      example: "Vietnam"
+                    phone:
+                      type: string
+                      example: "0328615104"
+                  status:
+                    type: string
+                    description: Status Product
+                    example: Pending
+                  paymentMethod:
+                    type: string
+                    description: Payment
+                    enum: [COD, Stripe]
+                    example: COD
+                  payment:
+                    type: boolean
+                    description: Status payment
+                    default: false
+                  date:
+                    type: string
+                    format: date-time
+                    description: Date create Order
+      responses:
+        200:
+          description: Update order successfully
+          content:
+            application/json:
+              example:
+                success: true
+                message: "OK"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Bad Request"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"
+
+  /api/order/user-orders:
+    get:
+      summary: Get history order
+      tags:
+        - Orders
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Order data
+          content:
+            application/json:
+              example:
+                success: true
+                message: "OK"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"

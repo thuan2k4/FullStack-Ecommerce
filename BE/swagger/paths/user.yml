@@ -1,0 +1,139 @@
+paths:
+  /api/user/register:
+    post:
+      summary: Register
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/Users"
+                - type: object
+                  properties:
+                    name:
+                      type: string
+              example:
+                name: ABC
+      responses:
+        "201":
+          description: Register successfully
+          content:
+            application/json:
+              example:
+                success: true
+                message: Register successfully!
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              examples:
+                InvalidEmail:
+                  summary: InvalidEmail
+                  value:
+                    success: false
+                    message: Please enter a valid email!
+                WeakPassword:
+                  summary: WeakPassword
+                  value:
+                    success: false
+                    message: Please enter a strong password!
+        "409":
+          description: User already exists
+          content:
+            application/json:
+              example:
+                success: false
+                message: User already exists!
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: Internal server error
+
+  /api/user/login:
+    post:
+      summary: Login as user
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Users"
+      responses:
+        "200":
+          description: Login successfully
+          content:
+            application/json:
+              example:
+                success: true
+                token: "jwt_token_here"
+                message: Login successfully!
+        "401":
+          description: Unauthorized (wrong password)
+          content:
+            application/json:
+              example:
+                success: false
+                message: Password is incorrect, try again!
+        "404":
+          description: User not found
+          content:
+            application/json:
+              example:
+                success: false
+                message: User doesn't exists!
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: Internal server error
+
+  /api/user/admin:
+    post:
+      summary: Login as admin
+      tags: [Admin]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: "admin@domain.com"
+                password:
+                  type: string
+                  example: "qwerty123"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              example:
+                success: true
+                token: "jwt_token_here"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              example:
+                success: false
+                message: Invalid email or password, try again!
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: Server error

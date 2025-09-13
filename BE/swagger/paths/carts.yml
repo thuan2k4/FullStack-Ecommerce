@@ -1,0 +1,144 @@
+paths:
+  /api/cart/add-cart:
+    post:
+      summary: Add a new cart
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - itemId
+                - size
+              properties:
+                itemId:
+                  type: string
+                  example: "6894b22eb4c7dbb4c49427d5"
+                size:
+                  type: string
+                  example: "S"
+      responses:
+        200:
+          description: Product added successfully
+          content:
+            application/json:
+              example:
+                success: true
+                message: "Item added to cart!"
+        400:
+          description: Missing itemId and size
+          content:
+            application/json:
+              example:
+                success: false
+                message: "itemId and size are required!"
+        404:
+          description: User not exists!
+          content:
+            application/json:
+              example:
+                success: false
+                message: "User not found!"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"
+
+  /api/cart/update-cart:
+    put:
+      summary: Update a cart
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - size
+                - itemId
+                - quantity
+              properties:
+                userId:
+                  type: string
+                  example: "689beebc38e282f708deaa07"
+                size:
+                  type: string
+                  example: "S"
+                itemId:
+                  type: string
+                  example: "6894b22eb4c7dbb4c49427d5"
+                quantity:
+                  type: integer
+                  example: 1
+      responses:
+        200:
+          description: Product updated successfully
+          content:
+            application/json:
+              example:
+                success: true
+                message: "Item added to cart!"
+        400:
+          description: Missing itemId and size
+          content:
+            application/json:
+              example:
+                success: false
+                message: "itemId and size are required!"
+        404:
+          description: User not exists!
+          content:
+            application/json:
+              example:
+                success: false
+                message: "User not found!"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"
+
+  /api/cart/get-cart:
+    get:
+      summary: Get current cart from user
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Get Cart Data
+          content:
+            application/json:
+              example:
+                success: true
+                message: "Get Cart successfully!"
+        404:
+          description: User not exists!
+          content:
+            application/json:
+              example:
+                success: false
+                message: "User not found!"  
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"
