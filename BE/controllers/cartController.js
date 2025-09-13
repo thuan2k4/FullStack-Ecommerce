@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js"
+import productModel from './../models/productModel.js';
 
 const addToCart = async (req, res) => {
     try {
@@ -9,6 +10,14 @@ const addToCart = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "itemId and size are required!"
+            })
+        }
+
+        const productItem = await productModel.findById(itemId)
+        if (!productItem) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found."
             })
         }
 
@@ -45,12 +54,21 @@ const addToCart = async (req, res) => {
 
 const updateCart = async (req, res) => {
     try {
-        const { userId, itemId, size, quantity } = req.body
+        const userId = req.userId
+        const { itemId, size, quantity } = req.body
 
         if (!userId || !itemId || !size || quantity === undefined) {
             return res.status(400).json({
                 success: false,
                 message: "userId, itemId, size and quantity are required!"
+            })
+        }
+
+        const productItem = await productModel.findById(itemId)
+        if (!productItem) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found."
             })
         }
 
@@ -62,13 +80,21 @@ const updateCart = async (req, res) => {
             })
         }
 
+
         let cartData = userData.cartData || {}
 
         if (!cartData[itemId]) {
             cartData[itemId] = {}
         }
 
-        cartData[itemId][size] = quantity
+        if (quantity <= 0) {
+            if (cartData[itemId] && cartData[itemId][size] !== undefined) {
+                delete cartData[itemId]
+            }
+        }
+        else {
+            cartData[itemId][size] = quantity
+        }
 
         await userModel.findByIdAndUpdate(userId, { cartData }, { new: true })
 
