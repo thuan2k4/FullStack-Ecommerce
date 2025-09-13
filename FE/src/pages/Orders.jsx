@@ -10,7 +10,7 @@ const Orders = () => {
   const getDetailOrder = async () => {
     try {
       const res = await fetch(`${backendUrl}/api/order/user-orders`, {
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"

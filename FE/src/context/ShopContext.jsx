@@ -113,7 +113,7 @@ const ShopContextProvider = (props) => {
         if (token) {
             try {
                 const res = await fetch(`${backendUrl}/api/cart/update-cart`, {
-                    method: "POST",
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`
@@ -125,7 +125,7 @@ const ShopContextProvider = (props) => {
                     })
                 })
                 const data = await res.json()
-                // console.log(data)
+                console.log(data)
             } catch (error) {
                 console.log(error)
                 toast.error(error.message)
@@ -155,10 +155,9 @@ const ShopContextProvider = (props) => {
     const getUserCart = async () => {
         try {
             const res = await fetch(`${backendUrl}/api/cart/get-cart`, {
-                method: "POST",
+                method: "GET",
                 headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
+                    Authorization: `Bearer ${token}`
                 }
             })
             const data = await res.json()
