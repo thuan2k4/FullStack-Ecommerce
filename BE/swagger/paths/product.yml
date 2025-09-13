@@ -1,0 +1,162 @@
+# swagger/paths/products.yaml
+paths:
+  /api/product/add-product:
+    post:
+      summary: Add a new product
+      tags: [Products]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "201":
+          description: Product added successfully
+          content:
+            application/json:
+              example:
+                success: true
+                message: "Product added successfully!"
+        "400":
+          description: Missing required fields
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Missing required fields!"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Internal server error"
+
+  /api/product/list-product:
+    get:
+      summary: Get all products
+      tags: [Products]
+      responses:
+        "200":
+          description: Successfully fetched all products
+          content:
+            application/json:
+              example:
+                success: true
+                products:
+                  - _id: "64b7f6f7c2e4c2f4a2d9a123"
+                    name: "T-Shirt"
+                    description: "High quality cotton T-shirt"
+                    price: 299000
+                    category: "Clothing"
+                    subCategory: "Men"
+                    sizes: ["S", "M", "L"]
+                    bestseller: true
+                    image:
+                      [
+                        "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+                      ]
+                    date: "2025-09-10T10:00:00Z"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Internal server error"
+
+  /api/product/remove-product:
+    post:
+      summary: Remove a product by ID
+      tags: [Products]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  example: "64b7f6f7c2e4c2f4a2d9a123"
+      responses:
+        "200":
+          description: Product removed successfully
+          content:
+            application/json:
+              example:
+                success: true
+                message: "Product removed successfully!"
+        "404":
+          description: Product not found
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Product not found!"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Internal server error"
+
+  /api/product/single-product:
+    post:
+      summary: Get a single product by ID
+      tags: [Products]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  example: "64b7f6f7c2e4c2f4a2d9a123"
+      responses:
+        "200":
+          description: Successfully fetched product
+          content:
+            application/json:
+              example:
+                success: true
+                product:
+                  _id: "64b7f6f7c2e4c2f4a2d9a123"
+                  name: "T-Shirt"
+                  description: "High quality cotton T-shirt"
+                  price: 299000
+                  category: "Clothing"
+                  subCategory: "Men"
+                  sizes: ["S", "M", "L"]
+                  bestseller: true
+                  image:
+                    ["https://res.cloudinary.com/demo/image/upload/sample.jpg"]
+                  date: "2025-09-10T10:00:00Z"
+        "404":
+          description: Product not found
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Product not found!"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Internal server error"
