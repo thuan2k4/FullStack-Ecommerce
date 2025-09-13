@@ -27,7 +27,6 @@ const PlaceOrder = async (req, res) => {
             status: "Pending",
             paymentMethod: "COD",
             payment: false,
-            date: Date.now()
         }
 
         const newOrder = new orderModel(orderData)
@@ -69,7 +68,6 @@ const PlaceOrderStripe = async (req, res) => {
             status: "Pending",
             paymentMethod: "Stripe",
             payment: false,
-            date: Date.now()
         }
 
         const newOrder = new orderModel(orderData)

@@ -8,7 +8,7 @@ const Orders = ({ token }) => {
     const fetchAllOrders = async () => {
         try {
             const res = await fetch(`${backendUrl}/api/order/list`, {
-                method: "POST",
+                method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
@@ -31,7 +31,7 @@ const Orders = ({ token }) => {
         try {
             console.log(token)
             const res = await fetch(`${backendUrl}/api/order/status`, {
-                method: "POST",
+                method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
