@@ -6,15 +6,21 @@
             "use": "@vercel/node",
             "config": {
                 "includeFiles": [
-                    "dist/**"
+                    "swagger/paths/**/*.yml",
+                    "models/**/*.js",
+                    "node_modules/swagger-ui-dist/**" 
                 ]
             }
         }
     ],
     "routes": [
         {
+            "src": "/api/docs/(.*)",
+            "dest": "/server.js"
+        },
+        {
             "src": "/(.*)",
-            "dest": "server.js"
+            "dest": "/server.js"
         }
     ]
 }
