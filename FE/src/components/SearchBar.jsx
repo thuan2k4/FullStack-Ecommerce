@@ -8,7 +8,6 @@ const SearchBar = () => {
     const location = useLocation() // get current path
     const [visible, setVisible] = useState(false)
 
-
     useEffect(() => {
         const path = location.pathname
         if (path.includes('collection') && showSearch) {
@@ -17,7 +16,7 @@ const SearchBar = () => {
         else {
             setVisible(false)
         }
-    }, [location])
+    }, [location, showSearch])
 
     return showSearch && visible ? (
         <div className='border-t border-b bg-gray-50 text-center flex justify-center items-center'>

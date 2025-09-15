@@ -9,7 +9,7 @@ import DropDown from './DropDown'
 
 const Navbar = () => {
     const [visible, setVisible] = useState(false)
-    const { setShowSearch, getCartCount, setToken, token, setCartItems, navigate, getUserCart } = useContext(ShopContext)
+    const { showSearch, setShowSearch, getCartCount, setToken, token, setCartItems, navigate, getUserCart } = useContext(ShopContext)
     const [showDropDown, setShowDropDown] = useState(false)
 
     const Logout = () => {
@@ -54,13 +54,13 @@ const Navbar = () => {
                 </NavLink>
             </ul>
             <div className="flex items-center gap-6">
-                <img src={assets.search_icon} onClick={() => setShowSearch(true)} className='w-5 cursor-pointer' alt="Search-icon" />
+                <img src={assets.search_icon} onClick={() => setShowSearch(!showSearch)} className='w-5 cursor-pointer' alt="Search-icon" />
                 <div className="group relative">
                     {
                         token
                             ? <>
                                 <img onClick={() => setShowDropDown(!showDropDown)} className='w-5 cursor-pointer' src={assets.profile_icon} alt="Profile-icon" />
-                                <DropDown Logout={Logout} showDropDown={showDropDown} setShowDropDown={setShowDropDown}/>
+                                <DropDown Logout={Logout} showDropDown={showDropDown} setShowDropDown={setShowDropDown} />
                             </>
                             : <>
                                 <img
