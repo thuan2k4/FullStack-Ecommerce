@@ -133,6 +133,37 @@ const ShopContextProvider = (props) => {
         }
     }
 
+    const removeCart = async (itemId) => {
+        if (token) {
+            try {
+                const res = await fetch(`${backendUrl}/api/cart/remove-cart`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        itemId,
+                    })
+                })
+                const data = await res.json()
+                console.log(data)
+
+                setCartItems(prev => {
+                    const updated = { ...prev };
+                    if (updated[itemId]) {
+                        delete updated[itemId]
+                    }
+                    return updated
+                })
+
+            } catch (error) {
+                console.log(error)
+                toast.error(error.message)
+            }
+        }
+    }
+
     // Count total product
     const getCartAmount = () => {
         let totalAmount = 0
@@ -183,7 +214,8 @@ const ShopContextProvider = (props) => {
         navigate,
         backendUrl,
         token, setToken,
-        getUserCart
+        getUserCart,
+        removeCart
     }
 
     return (

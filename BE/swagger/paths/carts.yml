@@ -85,26 +85,41 @@ paths:
                   example: 1
       responses:
         200:
-          description: Product updated successfully
+          description: Cart updated successfully
           content:
             application/json:
               example:
                 success: true
                 message: "Item added to cart!"
         400:
-          description: Missing itemId and size
+          description: Missing userId, itemId, size and quantity
           content:
             application/json:
               example:
                 success: false
-                message: "itemId and size are required!"
+                message: "userId, itemId, size and quantity are required!"
         404:
-          description: User not exists!
+          description: User or Product not found
           content:
             application/json:
-              example:
-                success: false
-                message: "User not found!"
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              examples:
+                userNotFound:
+                  summary: User not found
+                  value:
+                    success: false
+                    message: "User not found!"
+                productNotFound:
+                  summary: Product not found
+                  value:
+                    success: false
+                    message: "Product not found."
         500:
           description: Internal server error
           content:
@@ -134,7 +149,90 @@ paths:
             application/json:
               example:
                 success: false
-                message: "User not found!"  
+                message: "User not found!"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Message Error"
+
+  /api/cart/remove-cart:
+    delete:
+      summary: Remove a cart
+      tags:
+        - Carts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - itemId
+              properties:
+                userId:
+                  type: string
+                  example: "689beebc38e282f708deaa07"
+                itemId:
+                  type: string
+                  example: "6894b22eb4c7dbb4c49427d5"
+      responses:
+        200:
+          description: Cart removed successfully!
+          content:
+            application/json:
+              example:
+                success: true
+                message: "Item added to cart!"
+        400:
+          description: Missing field or not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              examples:
+                userAndItemNotFound:
+                  summary: Missing field
+                  value:
+                    success: false
+                    message: "userId and itemId are required!"
+                cartNotFound:
+                  summary: Cart not found!
+                  value:
+                    success: false
+                    message: "Cart not found!"
+        404:
+          description: User or Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+              examples:
+                userNotFound:
+                  summary: User not found
+                  value:
+                    success: false
+                    message: "User not found!"
+                productNotFound:
+                  summary: Product not found
+                  value:
+                    success: false
+                    message: "Product not found."
         500:
           description: Internal server error
           content:

@@ -135,5 +135,55 @@ const getUserCart = async (req, res) => {
         })
     }
 }
+const removeCart = async (req, res) => {
+    try {
+        const userId = req.userId
+        const { itemId } = req.body
 
-export { addToCart, updateCart, getUserCart }
+        if (!userId || !itemId) {
+            return res.status(400).json({
+                success: false,
+                message: "userId and itemId are required!"
+            })
+        }
+
+        const productItem = await productModel.findById(itemId)
+        if (!productItem) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found."
+            })
+        }
+
+        const userData = await userModel.findById(userId)
+        if (!userData) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found!"
+            })
+        }
+
+        let cartData = userData.cartData
+        if (!cartData) {
+            return res.status(400).json({
+                success: false,
+                message: "Cart not found!"
+            })
+        }
+        delete cartData[itemId]
+        await userModel.findByIdAndUpdate(userId, { cartData }, { new: true })
+
+        res.status(200).json({
+            success: true,
+            message: "Cart removed!"
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+
+}
+export { addToCart, updateCart, getUserCart, removeCart }
