@@ -69,7 +69,7 @@ paths:
                 message: "Internal server error"
 
   /api/product/remove-product:
-    post:
+    delete:
       summary: Remove a product by ID
       tags: [Products]
       security:
