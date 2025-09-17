@@ -39,8 +39,8 @@ const swaggerOptions = {
         tags: [
             { name: "Users", description: "User management" },
             { name: "Admin", description: "Admin login" },
-            { name: "Products", description: "Product management" },
-            { name: "Carts", description: "Cart management" },
+            { name: "Products", description: "Product management (Admin)" },
+            { name: "Carts", description: "Cart management (User)" },
             { name: "Orders", description: "Order management" },
         ],
         components: {

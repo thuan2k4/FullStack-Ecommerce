@@ -37,7 +37,7 @@ paths:
 
   /api/product/list-product:
     get:
-      summary: Get all products
+      summary: Get all products (admin-user)
       tags: [Products]
       responses:
         "200":
@@ -77,7 +77,7 @@ paths:
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
@@ -118,7 +118,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:

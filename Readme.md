@@ -23,28 +23,32 @@ A modern e-commerce application where users can browse products, add to cart, an
 
 --- 
 ## Features 
-- [x] **MVC architecture** (Model–View–Controller) — clear separation of concerns 
-- [x] **User Authentication** (JWT-based registration & login) 
-- [x] **CRUD operations** — manage products, categories, users 
-- [x] **Shopping Cart** — add/remove items & quantity management
-- [x] **Checkout & Order Processing** 
-- [x] **Admin Dashboard** — manage products, orders, users 
-- [x] **Responsive UI** — works well on mobile & desktop 
-- [x] **RESTful API** for frontend–backend communication 
+- ✅ **MVC architecture** for clean separation of concerns
+- ✅ **User Authentication & Authorization** with JWT
+- ✅ **Product Management** with categories, images (Cloudinary)
+- ✅ **Shopping Cart & Checkout** with real Stripe payment integration
+- ✅ **Order Management** and status updates
+- ✅ **Admin Dashboard** for product/user/order control
+- ✅ **RESTful API** fully documented with **Swagger**
+- ✅ **Responsive UI** built with TailwindCSS
+- ✅ **Dockerized** for local development & production deployment
+- ✅ **Environment-based config** for local and production
 --- 
 ## Architecture 
 This project is structured with the **MVC** design pattern: 
-- **Model**: database schemas and data logic (e.g. Mongoose models) 
-- **View**: React components rendering UI and handling user interaction 
-- **Controller**: backend controllers managing logic and routing via Express 
+- **Model**: Mongoose schemas & business logic  
+- **View**: React front-end (Storefront & Admin)  
+- **Controller**: Express controllers & routing
 --- 
 ## Tech Stack 
-- **Frontend**: React, CSS Framework (Tailwind) 
-- **Backend**: Node.js, Express.js 
-- **Database**: MongoDB (via Mongoose) 
-- **Authentication**: JWT (JSON Web Tokens) 
-- **Styling & UI**: Tailwind 
-- **Tools**: Postman (test API). 
+- **Frontend**: React, TailwindCSS, Context API
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB Atlas (Mongoose)
+- **Authentication**: JWT
+- **Payment**: Stripe
+- **Storage**: Cloudinary (product images)
+- **API Docs**: Swagger / OpenAPI 3
+- **Containerization**: Docker & docker-compose
 --- 
 ## Installation
 ```bash

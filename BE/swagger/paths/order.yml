@@ -2,7 +2,7 @@
 paths:
   /api/order/list:
     get:
-      summary: Get all order from user
+      summary: Get all order (admin)
       tags:
         - Orders
       security:
@@ -25,7 +25,7 @@ paths:
 
   /api/order/status:
     put:
-      summary: Update order status
+      summary: Update order status (admin)
       tags:
         - Orders
       security:
@@ -71,7 +71,7 @@ paths:
 
   /api/order/place:
     post:
-      summary: Accept order
+      summary: Accept order (user)
       tags:
         - Orders
       security:
@@ -243,7 +243,7 @@ paths:
 
   /api/order/user-orders:
     get:
-      summary: Get history order
+      summary: Get history order (user)
       tags:
         - Orders
       security:
