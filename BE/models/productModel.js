@@ -9,7 +9,7 @@ import mongoose from "mongoose";
  *         - name
  *         - description
  *         - price
- *         - image
+ *         - images
  *         - category
  *         - subCategory
  *         - sizes
@@ -22,20 +22,25 @@ import mongoose from "mongoose";
  *           example: "High quality cotton T-shirt"
  *         price:
  *           type: number
- *           example: 299000
- *         image:
+ *           example: 299
+ *         images:
  *           type: array
+ *           description: Max image are 10.
+ *           maxItems: 10
  *           items:
  *             type: string
- *             example: "https://res.cloudinary.com/demo/image/upload/sample.jpg"
+ *             format: binary
  *         category:
  *           type: string
- *           example: "Clothing"
+ *           enum: [Topwear, Bottomwear, Outerwear]
+ *           example: "Topwear"
  *         subCategory:
  *           type: string
+ *           enum: [Men, Women, Kids]
  *           example: "Men"
  *         sizes:
  *           type: array
+ *           description: Size are [S, M, L, XL, XXL]
  *           items:
  *             type: string
  *           example: ["S", "M", "L"]
@@ -47,11 +52,20 @@ const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    image: { type: Array, required: true },
+    image: { type: [String], required: true },
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
-    sizes: { type: Array, required: true },
-    bestseller: { type: Boolean },
+    sizes: {
+        type: Array,
+        required: true,
+        validate: {
+            validator: function (v) {
+                return v.every(size => ['S', 'M', 'L', 'XL', 'XXL'].includes(size))
+            },
+            message: props => `${props.value} contains invalid sizes. Valid sizes are S, M, L, XL, XXL`
+        }
+    },
+    bestseller: { type: Boolean, default: false },
     date: { type: Date, required: true },
 })
 

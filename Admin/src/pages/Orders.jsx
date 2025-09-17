@@ -29,7 +29,7 @@ const Orders = ({ token }) => {
 
     const statusHandler = async (e, orderId) => {
         try {
-            console.log(token)
+            // console.log(token)
             const res = await fetch(`${backendUrl}/api/order/status`, {
                 method: "PUT",
                 headers: {
@@ -42,7 +42,7 @@ const Orders = ({ token }) => {
                 })
             })
             const data = await res.json()
-            console.log(data)
+            // console.log(data)
             if (data.success) {
                 await fetchAllOrders()
             }

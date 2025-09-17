@@ -125,7 +125,7 @@ const ShopContextProvider = (props) => {
                     })
                 })
                 const data = await res.json()
-                console.log(data)
+                // console.log(data)
             } catch (error) {
                 console.log(error)
                 toast.error(error.message)
@@ -147,7 +147,7 @@ const ShopContextProvider = (props) => {
                     })
                 })
                 const data = await res.json()
-                console.log(data)
+                // console.log(data)
 
                 setCartItems(prev => {
                     const updated = { ...prev };

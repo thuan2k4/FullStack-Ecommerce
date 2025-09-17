@@ -6,6 +6,19 @@ const addProduct = async (req, res) => {
         const { name, description, price, category, subCategory, sizes, bestseller } = req.body
         const images = req.files
 
+        let parsedSizes = []
+        if (Array.isArray(sizes)) {
+            parsedSizes = sizes
+        } else if (typeof sizes === 'string') {
+            try {
+                const tmp = JSON.parse(sizes)
+                if (Array.isArray(tmp)) parsedSizes = tmp
+                else if (typeof tmp === 'string') parsedSizes = tmp.split(',').map(s => s.trim()).filter(Boolean)
+                else parsedSizes = [String(tmp)]
+            } catch (err) {
+                parsedSizes = sizes.split(',').map(s => s.trim()).filter(Boolean)
+            }
+        }
         if (!name || !description || !price || !category || !sizes || !images?.length) {
             return res.status(400).json({
                 success: false,
@@ -26,7 +39,7 @@ const addProduct = async (req, res) => {
             price: Number(price),
             category,
             subCategory,
-            sizes: JSON.parse(sizes),
+            sizes: parsedSizes,
             bestseller: bestseller === 'true',
             image: imagesUrl,
             date: Date.now()

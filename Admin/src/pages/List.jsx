@@ -37,7 +37,7 @@ const List = ({ token }) => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
-                method: "POST",
+                method: "DELETE",
                 body: JSON.stringify({
                     productId: id
                 })
