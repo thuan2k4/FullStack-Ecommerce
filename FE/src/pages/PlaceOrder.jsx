@@ -31,7 +31,7 @@ const PlaceOrder = () => {
 
         try {
             let orderItems = []
-            console.log(cartItems)
+            // console.log(cartItems)
 
             for (const items in cartItems) {
                 for (const item in cartItems[items]) {
@@ -52,7 +52,7 @@ const PlaceOrder = () => {
                 amount: getCartAmount() + delivery_fee
             }
 
-            console.log(orderData)
+            // console.log(orderData)
             switch (method) {
                 case 'cod':
                     try {
