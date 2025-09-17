@@ -9,7 +9,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
@@ -62,7 +62,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
@@ -130,7 +130,7 @@ paths:
 
   /api/cart/get-cart:
     get:
-      summary: Get current cart from user
+      summary: Get current cart
       tags:
         - Carts
       security:
@@ -168,7 +168,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:

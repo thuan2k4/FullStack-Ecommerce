@@ -68,9 +68,19 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/Users"
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: qthuan1234@gmail.com
+                password:
+                  type: string
+                  example: 123456789
       responses:
         "200":
           description: Login successfully
@@ -109,7 +119,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
               type: object
               required:
@@ -118,10 +128,10 @@ paths:
               properties:
                 email:
                   type: string
-                  example: "admin@domain.com"
+                  example: admin@domain.com
                 password:
                   type: string
-                  example: "qwerty123"
+                  example: qwerty123
       responses:
         "200":
           description: Login successful
