@@ -6,16 +6,23 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/Users"
-                - type: object
-                  properties:
-                    name:
-                      type: string
-              example:
-                name: ABC
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  example: "abc"
+                email:
+                  type: string
+                  example: "abc@gmail.com"
+                password:
+                  type: string
+                  example: "123456789"
       responses:
         "201":
           description: Register successfully
