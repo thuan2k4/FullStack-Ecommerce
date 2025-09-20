@@ -32,11 +32,11 @@ import mongoose from "mongoose";
  *             format: binary
  *         category:
  *           type: string
- *           enum: [Topwear, Bottomwear, Outerwear]
+ *           enum: [Men, Women, Kids]
  *           example: "Topwear"
  *         subCategory:
  *           type: string
- *           enum: [Men, Women, Kids]
+ *           enum: [Topwear, Bottomwear, Winterwear]  
  *           example: "Men"
  *         sizes:
  *           type: array

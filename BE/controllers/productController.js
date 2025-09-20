@@ -122,5 +122,40 @@ const singleProduct = async (req, res) => {
         })
     }
 }
+const filterProduct = async (req, res) => {
+    try {
+        const { category, subCategory, sort } = req.query
+        console.log(sort)
+        let filterCriteria = {}
 
-export { addProduct, listProduct, removeProduct, singleProduct }
+        // Xử lý filter theo category
+        if (category) {
+            const categories = category.split(',')
+            filterCriteria.category = { $in: categories }
+        }
+
+        // Xử lý filter theo subCategory
+        if (subCategory) {
+            const subcategories = subCategory.split(',')
+            filterCriteria.subCategory = { $in: subcategories }
+        }
+        // Thực hiện query với các điều kiện filter
+        const products = await productModel.find(filterCriteria)
+            .sort(sort === 'low-high' ? { price: 1 } : sort === 'high-low' ? { price: -1 } : {})
+
+        res.status(200).json({
+            success: true,
+            count: products.length,
+            products
+        })
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+export { addProduct, listProduct, removeProduct, singleProduct, filterProduct }
