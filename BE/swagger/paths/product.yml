@@ -160,3 +160,79 @@ paths:
               example:
                 success: false
                 message: "Internal server error"
+
+  /api/product/filter:
+    get:
+      summary: "Filter, sort, and paginate products"
+      description: "Filter products by category and subCategory, sort by price, and paginate results."
+      tags: [Products]
+      parameters:
+        - name: category
+          in: query
+          description: "List of categories"
+          required: false
+          schema:
+            type: string
+            example: Men
+        - name: subCategory
+          in: query
+          description: "List of subcategories"
+          required: false
+          schema:
+            type: string
+            example: Topwear
+        - name: sort
+          in: query
+          description: "Sort by price"
+          required: false
+          schema:
+            type: string
+            enum: [low-high, high-low]
+            example: low-high
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+            example: 1
+        - name: limit
+          in: query
+          description: "Items per page"
+          required: false
+          schema:
+            type: integer
+            default: 10
+            example: 10
+      responses:
+        "200":
+          description: "Result"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  total:
+                    type: integer
+                    example: 57
+                  currentPage:
+                    type: integer
+                    example: 2
+                  totalPages:
+                    type: integer
+                    example: 6
+                  products:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              example:
+                success: false
+                message: "Internal server error"
