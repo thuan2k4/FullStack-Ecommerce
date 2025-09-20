@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import usePagination from '../hooks/Pagination'
 import { ShopContext } from '../context/ShopContext'
 import Footer from '../components/Footer'
 import { assets } from '../assets/frontend_assets/assets'
@@ -13,6 +14,16 @@ const Collection = () => {
   const [category, setCategory] = useState([])
   const [subCategory, setSubCategory] = useState([])
   const [sortType, setSortType] = useState('relevant')
+
+  const {
+    currentPage,
+    totalPages,
+    setTotalPages,
+    paginate,
+    previousPage,
+    nextPage,
+    itemsPerPage
+  } = usePagination(12)
 
   const toggleCategory = (e) => {
 
@@ -33,28 +44,34 @@ const Collection = () => {
       setSubCategory(prev => [...prev, e.target.value])
     }
   }
-  const fetchFiltered = async () => {
+  const fetchFiltered = async (page = currentPage) => {
     const params = new URLSearchParams()
     if (category.length) params.append('category', category.join(','))
     if (subCategory.length) params.append('subCategory', subCategory.join(','))
     if (sortType && sortType !== 'relevant') params.append('sort', sortType)
 
+    params.append('page', page)
+    params.append('limit', itemsPerPage)
+
     try {
       const res = await fetch(`${backendUrl}/api/product/filter?${params.toString()}`)
       const data = await res.json()
       setFilterProducts(data.products)
+      setTotalPages(Math.ceil(data.total / itemsPerPage))
     } catch (error) {
       console.error('Error fetching filtered products:', error.message)
       toast.error('Error fetching filtered products');
     }
   }
-  useEffect(() => {
-    setFilterProducts(products)
-  }, [])
 
   useEffect(() => {
-    fetchFiltered();
+    fetchFiltered(1);
   }, [category, subCategory, sortType])
+
+  useEffect(() => {
+    fetchFiltered(currentPage)
+    console.log(totalPages)
+  }, [currentPage])
 
   return (
     <>
@@ -121,8 +138,46 @@ const Collection = () => {
               ))
             }
           </div>
+          {/* Pagination Controls */}
+          <div className="flex justify-center items-center gap-4 mt-8 mb-4">
+            <button
+              onClick={previousPage}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded ${currentPage === 1
+                ? 'bg-gray-200 cursor-not-allowed'
+                : 'bg-blue-500 hover:bg-blue-600 text-white'
+                }`}
+            >
+              Previous
+            </button>
+
+            {Array.from({ length: totalPages }, (_, idx) => (
+              <button
+                key={idx + 1}
+                onClick={() => paginate(idx + 1)}
+                className={`w-10 h-10 rounded ${currentPage === idx + 1
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 hover:bg-gray-300'
+                  }`}
+              >
+                {idx + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={nextPage}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded ${currentPage === totalPages
+                ? 'bg-gray-200 cursor-not-allowed'
+                : 'bg-blue-500 hover:bg-blue-600 text-white'
+                }`}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
+
 
     </>
   )

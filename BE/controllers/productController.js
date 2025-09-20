@@ -124,8 +124,7 @@ const singleProduct = async (req, res) => {
 }
 const filterProduct = async (req, res) => {
     try {
-        const { category, subCategory, sort } = req.query
-        console.log(sort)
+        const { category, subCategory, sort, page = 1, limit = 10 } = req.query
         let filterCriteria = {}
 
         // Xử lý filter theo category
@@ -139,13 +138,20 @@ const filterProduct = async (req, res) => {
             const subcategories = subCategory.split(',')
             filterCriteria.subCategory = { $in: subcategories }
         }
+        const total = await productModel.countDocuments(filterCriteria)
+        const skip = (page - 1) * limit
+
         // Thực hiện query với các điều kiện filter
         const products = await productModel.find(filterCriteria)
             .sort(sort === 'low-high' ? { price: 1 } : sort === 'high-low' ? { price: -1 } : {})
+            .limit(Number(limit))
+            .skip(skip)
 
         res.status(200).json({
             success: true,
-            count: products.length,
+            total,
+            currentPage: Number(page),
+            totalPages: Math.ceil(total / limit),
             products
         })
     }
