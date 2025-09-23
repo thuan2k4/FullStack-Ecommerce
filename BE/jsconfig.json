@@ -1,0 +1,8 @@
+// set up type definitions for Jest
+{
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

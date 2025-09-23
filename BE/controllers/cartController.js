@@ -163,13 +163,7 @@ const removeCart = async (req, res) => {
             })
         }
 
-        let cartData = userData.cartData
-        if (!cartData) {
-            return res.status(400).json({
-                success: false,
-                message: "Cart not found!"
-            })
-        }
+        const cartData = { ...userData.cartData }
         delete cartData[itemId]
         await userModel.findByIdAndUpdate(userId, { cartData }, { new: true })
 
