@@ -1,7 +1,8 @@
 # FullStack E-commerce (MERN + MVC) 
 
-**A full-featured e-commerce platform** built with the MERN stack (MongoDB, Express, React, Node.js), following the **MVC (Model–View–Controller)** architecture. Includes an Admin panel, user authentication, shopping cart, checkout, and responsive UI. 
+**A full-featured e-commerce platform** built with the MERN stack (MongoDB, Express, React, Node.js), following the **MVC (Model–View–Controller)** architecture. Includes an Admin panel, user authentication, shopping cart, checkout, and responsive UI.
 
+Includes an Admin panel, user authentication, shopping cart, checkout, server-side pagination, backend unit tests, and a fully responsive UI.
 
 --- 
 ## Table of Contents 
@@ -13,13 +14,18 @@
 - [Usage](#usage) 
 - [Deployment](#deployment-vercel)
 - [Docker Setup](#docker-setup)
+- [Testing](#testing)
 - [Project Structure](#project-structure) 
 
 
 --- 
 
 ## About 
-A modern e-commerce application where users can browse products, add to cart, and checkout. Admins can manage products, orders, and users. Built with a clean structure using MVC architecture to ensure maintainability and scalability. 
+A modern e-commerce application where:
+- Customers can browse products, add them to a cart, and complete checkout via Stripe.
+- Admins can manage products, orders, and users through a dedicated dashboard.
+  
+The codebase follows a clean MVC design, making it easy to maintain and scale.
 
 --- 
 ## Features 
@@ -31,6 +37,8 @@ A modern e-commerce application where users can browse products, add to cart, an
 - ✅ **Admin Dashboard** for product/user/order control
 - ✅ **RESTful API** fully documented with **Swagger**
 - ✅ **Responsive UI** built with TailwindCSS
+- ✅ **Server-side** pagination & sorting for product collections
+- ✅ **Backend unit tests** using Jest & Supertest
 - ✅ **Dockerized** for local development & production deployment
 - ✅ **Environment-based config** for local and production
 --- 
@@ -42,7 +50,7 @@ This project is structured with the **MVC** design pattern:
 --- 
 ## Tech Stack 
 - **Frontend**: React, TailwindCSS, Context API
-- **Backend**: Node.js, Express.js
+- **Backend**: Node.js, Express.js, Jest (testing)
 - **Database**: MongoDB Atlas (Mongoose)
 - **Authentication**: JWT
 - **Payment**: Stripe
@@ -57,12 +65,12 @@ git clone https://github.com/thuan2k4/FullStack-Ecommerce.git
 cd FullStack-Ecommerce
 
 # Backend setup
-cd backend
+cd BE
 npm install
 npm run server  # or node server.js
 
 # Frontend setup
-cd ../frontend
+cd FE
 npm install
 npm run dev
 ```
@@ -73,7 +81,7 @@ npm run dev
 - Admin: login via admin credentials → manage products, users, orders
 
 Optional: Create `.env` file with:
--  For Back-End:
+-  For Back-End `BE/.env`:
 
 ```bash
 MONGODB_URI = YOUR_MONGODB_URI
@@ -87,13 +95,13 @@ STRIPE_SECRET_KEY = YOUR_STRIPE_SECRET_KEY
 TOKEN_EXPIRE=36000
 ```
 
-- For Front-End, Admin:
+- For Front-End, Admin `FE/.env` and `Admin/.env`:
 ```bash
 VITE_BACKEND_URL = "http://localhost:4000"
 ```
 ---
 ## Deployment Vercel
-- Config `vercel.json` for Admin/FE/BE
+- Configure `vercel.json` for Admin/FE/BE
 - Product URL:
     + API Docs: https://ecommerce-be-psi-five.vercel.app/api/docs
     + Front End: https://ecommerce-fe-zeta-one.vercel.app
@@ -158,10 +166,19 @@ volumes:
 
 ```
 ---
+## Testing
+- Backend tests are written with Jest and Supertest and (continue) use an in-memory MongoDB for isolation.
+- Run all tests:
+```bash
+cd BE
+npm test
+```
+---
 ## Project Structure
 ```
 FullStack-Ecommerce/
 ├── BE/
+|   ├── __tests__/
 |   ├── config/
 │   ├── controllers/
 │   ├── middlewares/
@@ -180,8 +197,9 @@ FullStack-Ecommerce/
     ├── src/
     │   ├── assets/
     │   ├── components/
+    │   ├── hooks/
     │   ├── context/
-    │   └──  pages/
+    │   └── pages/
     ├── .env
     ├── utils/
     └── public/
